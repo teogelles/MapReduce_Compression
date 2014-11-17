@@ -8,6 +8,9 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 
 
+/**
+ * Extension of FileInputFormat to handle binary files.
+ */
 public class BinaryFileInputFormat extends FileInputFormat<Text, BytesWritable>{
  
     @Override

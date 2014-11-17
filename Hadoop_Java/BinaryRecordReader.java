@@ -14,11 +14,15 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.FileSystem;
 
 
+/**
+ * Extension of RecordReader to handle binary files.
+ * Reads in a split of input file, and extracts (filename, BytesWritable) 
+ * key-value pairs for mapper.
+ */
 public class BinaryRecordReader extends RecordReader<Text, BytesWritable> {
  
     private long start;
     private long end;
-    private long pos;
 	private FSDataInputStream fileIn;
     private Text key = new Text();
     private BytesWritable value = new BytesWritable();
@@ -28,11 +32,8 @@ public class BinaryRecordReader extends RecordReader<Text, BytesWritable> {
             BinaryRecordReader.class);
  
     /**
-     * From Design Pattern, O'Reilly...
      * This method takes as arguments the map task’s assigned InputSplit and
-     * TaskAttemptContext, and prepares the record reader. For file-based input
-     * formats, this is a good place to seek to the byte position in the file to
-     * begin reading.
+     * TaskAttemptContext, and prepares the record reader.
      */
     @Override
     public void initialize(
@@ -43,33 +44,30 @@ public class BinaryRecordReader extends RecordReader<Text, BytesWritable> {
         // This InputSplit is a FileInputSplit
         FileSplit split = (FileSplit) genericSplit;
  
-        // Retrieve configuration, and Max allowed
-        // bytes for a single record
-        Configuration job = context.getConfiguration();
+        // Retrieve configuration
+        Configuration conf = context.getConfiguration();
        	
-        // Split "S" is responsible for all records
-        // starting from "start" and "end" positions
+        // Set class variables
         this.start = split.getStart();
         this.end = start + split.getLength();
-        this.pos = this.start;
- 
-        // Retrieve file containing Split "S"
+        this.fileRead = false;
+
+        // Load the input file
         final Path path = split.getPath();
         this.key.set(path.getName());
-        FileSystem fs = path.getFileSystem(job);
+        FileSystem fs = path.getFileSystem(conf);
         fileIn = fs.open(path);
-
-
-        fileRead = false;
     }
  
     /**
-     * From Design Pattern, O'Reilly...
-     * Like the corresponding method of the InputFormat class, this reads a
-     * single key/ value pair and returns true until the data is consumed.
+     * Reads a single key/value pair and returns true until data is exhausted.
      */
     @Override
     public boolean nextKeyValue() throws IOException {
+
+    	// In this simple RecordReader we only give 1 key-value pair, that is
+    	// (filename, all bytes in the split). We may divide bytes into more
+    	// pairs later.
     	if (! this.fileRead) {
     		byte[] buffer = new byte[ (int) (this.end - this.start)];
     		this.fileIn.readFully(this.start, buffer, 0, buffer.length);
@@ -85,6 +83,9 @@ public class BinaryRecordReader extends RecordReader<Text, BytesWritable> {
     }
  
  	@Override
+ 	/**
+ 	 * Get progress of reading. Will be used to print mapping progress.
+ 	 */
     public float getProgress() throws IOException, InterruptedException {
         if ( this.fileRead) {
             return 0.0f;
@@ -94,10 +95,7 @@ public class BinaryRecordReader extends RecordReader<Text, BytesWritable> {
     }
 
     /**
-     * From Design Pattern, O'Reilly...
-     * This methods are used by the framework to give generated key/value pairs
-     * to an implementation of Mapper. Be sure to reuse the objects returned by
-     * these methods if at all possible!
+     * Get the current key stored in reader.
      */
     @Override
     public Text getCurrentKey() throws IOException,
@@ -106,10 +104,7 @@ public class BinaryRecordReader extends RecordReader<Text, BytesWritable> {
     }
  
     /**
-     * From Design Pattern, O'Reilly...
-     * This methods are used by the framework to give generated key/value pairs
-     * to an implementation of Mapper. Be sure to reuse the objects returned by
-     * these methods if at all possible!
+     * Get the current value stored in reader.
      */
     @Override
     public BytesWritable getCurrentValue() throws IOException, InterruptedException {
@@ -118,9 +113,7 @@ public class BinaryRecordReader extends RecordReader<Text, BytesWritable> {
  
  
     /**
-     * From Design Pattern, O'Reilly...
-     * This method is used by the framework for cleanup after there are no more
-     * key/value pairs to process.
+     * Close the reader.
      */
     @Override
     public void close() throws IOException {
