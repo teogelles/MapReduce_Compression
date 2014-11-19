@@ -18,10 +18,9 @@ class MRCom(MRJob):
                     reducer=self.comRed)
         ]
 
-    def comMap(self, _, line):
+    def comMap(self, splitNum, split):
 
-        filename = jobconf_from_env('map.input.file')
-        yield 1, filename
+        yield splitNum, split
         
     def comRed(self, key, values):
 
@@ -30,5 +29,6 @@ class MRCom(MRJob):
 
 
 if __name__ == '__main__':
+    MRJob.HADOOP_INPUT_FORMAT = "BinaryInputFormat"
     MRCom.run()
 
