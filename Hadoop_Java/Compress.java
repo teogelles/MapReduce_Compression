@@ -1,10 +1,9 @@
-
-
 import java.io.IOException;
 
 import org.apache.hadoop.mapred.TaskID;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -16,69 +15,90 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-
 public class Compress {
 
-	/**
-	 * InputKey    - File name of the input file
-	 * InputValue  - Bytes in a split of the file (split length = file block size). 
-	 * OutputKey   - Task number of this mapping task.
-	 * OutputValue - Same as InputValue.
-	 */
-	public static class CompressMapper 
-			extends Mapper<Text, BytesWritable, IntWritable, BytesWritable>{
+    private static int numReduceTasks = 1;
+    
+    /**
+     * InputKey    - File name of the input file
+     * InputValue  - Bytes in a split of the file (split length = file block size). 
+     * OutputKey   - Task number of this mapping task.
+     * OutputValue - Same as InputValue.
+     */
+    public static class CompressMapper 
+	extends Mapper<IntTextPair, BytesWritable, Text, IntBytePair>{
 
-		public void map(Text key, BytesWritable value, Context context) 
-				throws IOException, InterruptedException {
+	public void map(IntTextPair key, BytesWritable value, Context context) 
+	    throws IOException, InterruptedException {
 
-			Configuration conf = context.getConfiguration();
-			TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
-			int taskNumber = taskID.getId();
-			context.write(new IntWritable(taskNumber), value);
-		}
+	    /*
+	    Configuration conf = context.getConfiguration();
+	    TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
+	    int taskNumber = taskID.getId();
+	    
+	    context.write(new IntWritable(taskNumber), value);
+	    */
+
+	    IntBytePair outputValue = new IntBytePair();
+	    outputValue.id = key.id;
+	    outputValue.content = value;
+	    
+	    context.write(key.name, outputValue);
 	}
+    }
 
 
-	/**
-	 * InputKey    - Task number of the mapping task where input is coming from.
-	 * InputValue  - Bytes in a split of the file.
-	 * OutputKey   - Nothing
-	 * OutputValue - Same as InputValue.
-	 */
-	public static class WriteFileReducer 
-			extends Reducer<IntWritable, BytesWritable, NullWritable, BytesWritable> {
+    /**
+     * InputKey    - Task number of the mapping task where input is coming from.
+     * InputValue  - Bytes in a split of the file.
+     * OutputKey   - Nothing
+     * OutputValue - Same as InputValue.
+     */
+    public static class WriteFileReducer
+	extends Reducer<Text, IntBytePair, NullWritable, IntBytePair> {
 
-		public void reduce(IntWritable key, Iterable<BytesWritable> values, Context context) 
-			throws IOException, InterruptedException {
+	public void reduce(Text key, Iterable<IntBytePair> values,
+			   Context context) 
+	    throws IOException, InterruptedException {
 
 
-			for (BytesWritable value : values) {
-				context.write(NullWritable.get(), value);
-			}
-		}
+	    for (IntBytePair value : values) {
+		System.out.println("Split ID: %d\n" + value.id.get());
+		context.write(NullWritable.get(), value);
+	    }
 	}
+    }
 
-  public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
   	// Create Job and Configuration instances.
-    Configuration conf = new Configuration();
-    Job job = Job.getInstance(conf, "Compress");
+	Configuration conf = new Configuration();
+	Job job = Job.getInstance(conf, "Compress");
 
-    // Set types
-    job.setInputFormatClass(BinaryFileInputFormat.class);
-    job.setJarByClass(Compress.class);
-    job.setMapperClass(CompressMapper.class);
-    job.setReducerClass(WriteFileReducer.class);
-    job.setMapOutputKeyClass(IntWritable.class);
-    job.setMapOutputValueClass(BytesWritable.class);
-    job.setOutputKeyClass(NullWritable.class);
-    job.setOutputValueClass(BytesWritable.class);
+	// Set types
+	job.setInputFormatClass(BinaryFileInputFormat.class);
+	job.setJarByClass(Compress.class);
+	job.setMapperClass(CompressMapper.class);
+	job.setReducerClass(WriteFileReducer.class);
 
-    // Set input / output types
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+	job.setMapOutputKeyClass(Text.class);
+	job.setMapOutputValueClass(IntBytePair.class);
 
-    // Execute
-    System.exit(job.waitForCompletion(true) ? 0 : 1);
-  }
+	job.setOutputKeyClass(NullWritable.class);
+	//job.setOutputValueClass(BytesWritable.class);
+	job.setOutputValueClass(IntBytePair.class);
+
+	
+	// Set number of reducers
+	job.setNumReduceTasks(numReduceTasks);
+
+	
+	// Set input / output paths
+	FileInputFormat.addInputPath(job, new Path(args[0]));
+	FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+	
+	// Execute
+	System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }
 }
