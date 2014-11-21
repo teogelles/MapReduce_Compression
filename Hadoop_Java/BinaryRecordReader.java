@@ -40,24 +40,25 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
     @Override
     public void initialize(InputSplit genericSplit, TaskAttemptContext context)
 	throws IOException {
- 
+
         // This InputSplit is a FileInputSplit
         IndexedFileSplit split = (IndexedFileSplit) genericSplit;
- 
+
+
+
         // Retrieve configuration
         Configuration conf = context.getConfiguration();
-       	
+        
         // Set class variables
         this.start = split.getStart();
         this.end = start + split.getLength();
-	System.out.println("YOU SEE ME PRINTED\n");
-	
+
         this.fileRead = false;
 
         // Load the input file
         final Path path = split.getPath();
-	this.key.id.set(split.index);
-	this.key.name.set(path.getName());
+        this.key.id.set(split.index);
+        this.key.name.set(path.getName());
         FileSystem fs = path.getFileSystem(conf);
         fileIn = fs.open(path);
     }
@@ -72,17 +73,17 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
     	// (splitID, all bytes in the split). We may divide bytes into more
     	// pairs later.
     	if (! this.fileRead) {
-	    byte[] buffer = new byte[ (int) (this.end - this.start)];
-	    this.fileIn.readFully(this.start, buffer, 0, buffer.length);
-	    this.value.set(new BytesWritable(buffer));
-	    this.fileRead = true;
-	    return true;
-	}
-	else {
-	    key = null;
-	    value = null;
-	    return false;
-	}
+    	    byte[] buffer = new byte[ (int) (this.end - this.start)];
+    	    this.fileIn.readFully(this.start, buffer, 0, buffer.length);
+    	    this.value.set(new BytesWritable(buffer));
+    	    this.fileRead = true;
+    	    return true;
+        }
+        else {
+            key = null;
+            value = null;
+            return false;
+        }
     }
  
     @Override
@@ -103,8 +104,7 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
     @Override
     public IntTextPair getCurrentKey() throws IOException,
 	InterruptedException {
-	
-	return key;
+	   return key;
     }
  
     /**
@@ -113,8 +113,7 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
     @Override
     public BytesWritable getCurrentValue() throws IOException,
 	InterruptedException {
-	
-	return value;
+	   return value;
     }
  
  
@@ -123,10 +122,9 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
      */
     @Override
     public void close() throws IOException {
-	
-	if (this.fileIn != null) {
-	    this.fileIn.close();
-	}
+    	if (this.fileIn != null) {
+    	    this.fileIn.close();
+    	}
     }
  
 }

@@ -42,7 +42,8 @@ public class IntBytePair implements WritableComparable<IntBytePair> {
     @Override
     public int compareTo(IntBytePair other) {
 
-	int cmp = content.compareTo(other.content);
+        System.out.println("In IntBytePair compareTo() ");
+        int cmp = content.compareTo(other.content);
  
         if (cmp != 0) {
             return cmp;

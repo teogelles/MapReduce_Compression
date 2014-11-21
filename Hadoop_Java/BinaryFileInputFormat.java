@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -71,7 +72,6 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
 		long splitSize = blockSize;
 		
 
-
 		long bytesRemaining = length;
 		while (((double) bytesRemaining)/splitSize > SPLIT_SLOP) {
 		    int blkIndex = getBlockIndex(blkLocations, length-bytesRemaining);
@@ -98,7 +98,6 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
 
 	    index++;
 	}
-	LOG.debug("Total # of splits: " + splits.size());
 	return splits;
     }   
 }

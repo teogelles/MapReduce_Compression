@@ -14,6 +14,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.BasicConfigurator;
 
 public class Compress {
 
@@ -28,23 +29,23 @@ public class Compress {
     public static class CompressMapper 
 	extends Mapper<IntTextPair, BytesWritable, Text, IntBytePair>{
 
-	public void map(IntTextPair key, BytesWritable value, Context context) 
-	    throws IOException, InterruptedException {
+		public void map(IntTextPair key, BytesWritable value, Context context) 
+		    throws IOException, InterruptedException {
 
-	    /*
-	    Configuration conf = context.getConfiguration();
-	    TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
-	    int taskNumber = taskID.getId();
-	    
-	    context.write(new IntWritable(taskNumber), value);
-	    */
+		    /*
+		    Configuration conf = context.getConfiguration();
+		    TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
+		    int taskNumber = taskID.getId();
+		    
+		    context.write(new IntWritable(taskNumber), value);
+		    */
 
-	    IntBytePair outputValue = new IntBytePair();
-	    outputValue.id = key.id;
-	    outputValue.content = value;
-	    
-	    context.write(key.name, outputValue);
-	}
+		    IntBytePair outputValue = new IntBytePair();
+		    outputValue.id = key.id;
+		    outputValue.content = value;
+		    
+		    context.write(key.name, outputValue);
+		}
     }
 
 
@@ -57,19 +58,28 @@ public class Compress {
     public static class WriteFileReducer
 	extends Reducer<Text, IntBytePair, NullWritable, IntBytePair> {
 
-	public void reduce(Text key, Iterable<IntBytePair> values,
-			   Context context) 
-	    throws IOException, InterruptedException {
+		public void reduce(Text key, Iterable<IntBytePair> values,
+				   Context context) 
+		    throws IOException, InterruptedException {
 
+		    try {
+		    	Boolean bool = null;
+		    	bool.toString();
+		    }
+		    catch (Exception e) {
+		    	e.printStackTrace();
+		    }
 
-	    for (IntBytePair value : values) {
-		System.out.println("Split ID: %d\n" + value.id.get());
-		context.write(NullWritable.get(), value);
-	    }
-	}
+		    for (IntBytePair value : values) {
+				System.out.println("Split ID: " + value.id.get());
+				context.write(NullWritable.get(), value);
+		    }
+		}
     }
 
     public static void main(String[] args) throws Exception {
+
+	BasicConfigurator.configure();
 
   	// Create Job and Configuration instances.
 	Configuration conf = new Configuration();
