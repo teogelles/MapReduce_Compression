@@ -33,13 +33,13 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
     //getSplits
     private static final Log LOG = LogFactory.getLog(FileInputFormat.class);
     private static final double SPLIT_SLOP = 1.1;   // 10% slop
-    
+
     @Override
     public RecordReader<IntTextPair, BytesWritable>
-	createRecordReader(InputSplit split, TaskAttemptContext context)
-	throws IOException, InterruptedException {
-	
-        return new BinaryRecordReader();
+    createRecordReader(InputSplit split, TaskAttemptContext context)
+    throws IOException, InterruptedException {
+
+    return new BinaryRecordReader();
     }
 
 
@@ -49,55 +49,55 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
     @Override
     public List<InputSplit> getSplits(JobContext job) throws IOException {
 
-    	int index = 0;
-	
-    	long minSize = Math.max(getFormatMinSplitSize(), getMinSplitSize(job));
-    	long maxSize = getMaxSplitSize(job);
+        int index = 0;
 
-    	// generate splits
-    	List<InputSplit> splits = new ArrayList<InputSplit>();
-    	for (FileStatus file: listStatus(job)) {
-    	    Path path = file.getPath();
-    	    FileSystem fs = path.getFileSystem(job.getConfiguration());
-    	    long length = file.getLen();
-    	    BlockLocation[] blkLocations = fs.getFileBlockLocations(file, 0, length);
-    	    if ((length != 0) && isSplitable(job, path)) {
-		
-    		//Original blockSize and splitSize
-    		//long blockSize = file.getBlockSize();
-    		//long splitSize = computeSplitSize(blockSize, minSize, maxSize);
-		
-    		//What we want for our blockSize and splitSize
-    		long blockSize = length/10;
-    		long splitSize = blockSize;
-		
-    		long bytesRemaining = length;
-    		while (((double) bytesRemaining)/splitSize > SPLIT_SLOP) {
-    		    int blkIndex = getBlockIndex(blkLocations, length-bytesRemaining);
-    		    splits.add(new IndexedFileSplit(path, length-bytesRemaining, splitSize, 
-    						    blkLocations[blkIndex].getHosts(), index));
-    		    bytesRemaining -= splitSize;
-    		    index++;
-    		}
-        
-    		if (bytesRemaining != 0) {
-    		    splits.add(new IndexedFileSplit(path, length-bytesRemaining, bytesRemaining, 
-    						    blkLocations[blkLocations.length-1].getHosts(), index));
-    		}
-    	    }
+        long minSize = Math.max(getFormatMinSplitSize(), getMinSplitSize(job));
+        long maxSize = getMaxSplitSize(job);
 
-    	    else if (length != 0) {
-    		splits.add(new IndexedFileSplit(path, 0, length, blkLocations[0].getHosts(), index));
-    	    }
+        // generate splits
+        List<InputSplit> splits = new ArrayList<InputSplit>();
+        for (FileStatus file: listStatus(job)) {
+            Path path = file.getPath();
+            FileSystem fs = path.getFileSystem(job.getConfiguration());
+            long length = file.getLen();
+            BlockLocation[] blkLocations = fs.getFileBlockLocations(file, 0, length);
+            if ((length != 0) && isSplitable(job, path)) {
 
-    	    else { 
-    		//Create empty hosts array for zero length files
-    		splits.add(new IndexedFileSplit(path, 0, length, new String[0], index));
-    	    }
+                //Original blockSize and splitSize
+                //long blockSize = file.getBlockSize();
+                //long splitSize = computeSplitSize(blockSize, minSize, maxSize);
 
-    	    index++;
-    	}
-    	LOG.debug("Total # of splits: " + splits.size());
-    	return splits;
+                //What we want for our blockSize and splitSize
+                long blockSize = length/10;
+                long splitSize = blockSize;
+
+                long bytesRemaining = length;
+                while (((double) bytesRemaining)/splitSize > SPLIT_SLOP) {
+                    int blkIndex = getBlockIndex(blkLocations, length-bytesRemaining);
+                    splits.add(new IndexedFileSplit(path, length-bytesRemaining, splitSize, 
+                                blkLocations[blkIndex].getHosts(), index));
+                    bytesRemaining -= splitSize;
+                    index++;
+                }
+
+                if (bytesRemaining != 0) {
+                    splits.add(new IndexedFileSplit(path, length-bytesRemaining, bytesRemaining, 
+                                blkLocations[blkLocations.length-1].getHosts(), index));
+                }
+            }
+
+            else if (length != 0) {
+                splits.add(new IndexedFileSplit(path, 0, length, blkLocations[0].getHosts(), index));
+            }
+
+            else { 
+                //Create empty hosts array for zero length files
+                splits.add(new IndexedFileSplit(path, 0, length, new String[0], index));
+            }
+
+            index++;
+        }
+        LOG.debug("Total # of splits: " + splits.size());
+        return splits;
     }
 }

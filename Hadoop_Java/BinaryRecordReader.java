@@ -22,7 +22,7 @@ import org.apache.hadoop.fs.FileSystem;
  * key-value pairs for mapper.
  */
 public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable> {
- 
+
     private long start;
     private long end;
     private FSDataInputStream fileIn;
@@ -30,52 +30,52 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
     private BytesWritable value = new BytesWritable();
     private boolean fileRead;
     private int keyIndex = 0;
-    
+
     private static final Log LOG = LogFactory.getLog(BinaryRecordReader.class);
- 
+
     /**
      * This method takes as arguments the map task’s assigned InputSplit and
      * TaskAttemptContext, and prepares the record reader.
      */
     @Override
     public void initialize(InputSplit genericSplit, TaskAttemptContext context)
-	throws IOException {
+    throws IOException {
 
-        // This InputSplit is a FileInputSplit
-        IndexedFileSplit split = (IndexedFileSplit) genericSplit;
+    // This InputSplit is a FileInputSplit
+    IndexedFileSplit split = (IndexedFileSplit) genericSplit;
 
-        // Retrieve configuration
-        Configuration conf = context.getConfiguration();
-        
-        // Set class variables
-        this.start = split.getStart();
-        this.end = start + split.getLength();
+    // Retrieve configuration
+    Configuration conf = context.getConfiguration();
 
-        this.fileRead = false;
+    // Set class variables
+    this.start = split.getStart();
+    this.end = start + split.getLength();
 
-        // Load the input file
-        final Path path = split.getPath();
-        this.key.id.set(split.index);
-        this.key.name.set(path.getName());
-        FileSystem fs = path.getFileSystem(conf);
-        fileIn = fs.open(path);
+    this.fileRead = false;
+
+    // Load the input file
+    final Path path = split.getPath();
+    this.key.id.set(split.index);
+    this.key.name.set(path.getName());
+    FileSystem fs = path.getFileSystem(conf);
+    fileIn = fs.open(path);
     }
- 
+
     /**
      * Reads a single key/value pair and returns true until data is exhausted.
      */
     @Override
     public boolean nextKeyValue() throws IOException {
 
-    	// In this simple RecordReader we only give 1 key-value pair, that is
-    	// (splitID, all bytes in the split). We may divide bytes into more
-    	// pairs later.
-    	if (! this.fileRead) {
-    	    byte[] buffer = new byte[ (int) (this.end - this.start)];
-    	    this.fileIn.readFully(this.start, buffer, 0, buffer.length);
-    	    this.value.set(new BytesWritable(buffer));
-    	    this.fileRead = true;
-    	    return true;
+        // In this simple RecordReader we only give 1 key-value pair, that is
+        // (splitID, all bytes in the split). We may divide bytes into more
+        // pairs later.
+        if (! this.fileRead) {
+            byte[] buffer = new byte[ (int) (this.end - this.start)];
+            this.fileIn.readFully(this.start, buffer, 0, buffer.length);
+            this.value.set(new BytesWritable(buffer));
+            this.fileRead = true;
+            return true;
         }
         else {
             key = null;
@@ -83,17 +83,17 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
             return false;
         }
     }
- 
+
     @Override
     /**
      * Get progress of reading. Will be used to print mapping progress.
      */
     public float getProgress() throws IOException, InterruptedException {
-	if ( this.fileRead) {
-	    return 0.0f;
-	} else {
-	    return 1.0f;
-	}
+        if ( this.fileRead) {
+            return 0.0f;
+        } else {
+            return 1.0f;
+        }
     }
 
     /**
@@ -101,29 +101,29 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
      */
     @Override
     public IntTextPair getCurrentKey() throws IOException,
-	InterruptedException {
-	   return key;
+           InterruptedException {
+               return key;
     }
- 
+
     /**
      * Get the current value stored in reader.
      */
     @Override
     public BytesWritable getCurrentValue() throws IOException,
-	InterruptedException {
-	   return value;
+           InterruptedException {
+               return value;
     }
- 
- 
+
+
     /**
      * Close the reader.
      */
     @Override
     public void close() throws IOException {
-    	if (this.fileIn != null) {
-    	    this.fileIn.close();
-    	}
+        if (this.fileIn != null) {
+            this.fileIn.close();
+        }
     }
- 
+
 }
-    
+
