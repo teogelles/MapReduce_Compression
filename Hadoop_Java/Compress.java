@@ -24,6 +24,11 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+
 public class Compress {
 
     private static int numReduceTasks = 1;

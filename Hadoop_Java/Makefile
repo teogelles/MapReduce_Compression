@@ -2,7 +2,6 @@
 
 JFLAGS = -g
 JC = hadoop com.sun.tools.javac.Main
-#SRCS = Compress.java BinaryFileInputFormat.java BinaryRecordReader.java
 SRCS = *.java
 
 # Build wordcount example program
