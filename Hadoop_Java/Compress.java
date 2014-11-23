@@ -14,6 +14,15 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.BasicConfigurator;
+
+import org.apache.commons.collections.IteratorUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class Compress {
 
@@ -32,17 +41,17 @@ public class Compress {
 	    throws IOException, InterruptedException {
 
 	    /*
-	    Configuration conf = context.getConfiguration();
-	    TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
-	    int taskNumber = taskID.getId();
-	    
-	    context.write(new IntWritable(taskNumber), value);
+	      Configuration conf = context.getConfiguration();
+	      TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
+	      int taskNumber = taskID.getId();
+		    
+	      context.write(new IntWritable(taskNumber), value);
 	    */
 
 	    IntBytePair outputValue = new IntBytePair();
 	    outputValue.id = key.id;
 	    outputValue.content = value;
-	    
+		    
 	    context.write(key.name, outputValue);
 	}
     }
@@ -55,21 +64,50 @@ public class Compress {
      * OutputValue - Same as InputValue.
      */
     public static class WriteFileReducer
-	extends Reducer<Text, IntBytePair, NullWritable, IntBytePair> {
+	extends Reducer<Text, IntBytePair, NullWritable, BytesWritable> {
 
 	public void reduce(Text key, Iterable<IntBytePair> values,
 			   Context context) 
 	    throws IOException, InterruptedException {
 
-
-	    for (IntBytePair value : values) {
-		System.out.println("Split ID: " + value.id.get() + "\n");
-		context.write(NullWritable.get(), value);
+	    try {
+		Boolean bool = null;
+		bool.toString();
 	    }
+	    catch (Exception e) {
+		e.printStackTrace();
+	    }
+
+
+	    // Code to sort the input values.  This is best for testing.
+	    // With the final program this may cause a performance hit we
+	    // want to avoid
+	    List<IntBytePair> sortedList = new ArrayList<IntBytePair>();
+	    
+	    for (IntBytePair value : values) {
+	    	System.out.println("Split ID Initial: " + value.id.get());
+	    	System.out.println(value.toString());
+	    	sortedList.add(new IntBytePair(new IntWritable(value.id.get()),
+					       new BytesWritable(value.content.copyBytes())));
+	    }
+
+	    System.out.println("Initial sortedList:");
+	    System.out.println(Arrays.toString(sortedList.toArray()));
+	    Collections.sort(sortedList);
+	    System.out.println("Final sortedList:");
+	    System.out.println(Arrays.toString(sortedList.toArray()));
+	    
+	    for (IntBytePair value : sortedList) {
+		System.out.println("Split ID Sorted: " + value.id.get());
+		context.write(NullWritable.get(), value.content);
+	    }
+	    
 	}
     }
 
     public static void main(String[] args) throws Exception {
+
+	BasicConfigurator.configure();
 
   	// Create Job and Configuration instances.
 	Configuration conf = new Configuration();
@@ -77,6 +115,9 @@ public class Compress {
 
 	// Set types
 	job.setInputFormatClass(BinaryFileInputFormat.class);
+	
+	job.setOutputFormatClass(BytesValueOutputFormat.class);
+	
 	job.setJarByClass(Compress.class);
 	job.setMapperClass(CompressMapper.class);
 	job.setReducerClass(WriteFileReducer.class);
@@ -85,8 +126,8 @@ public class Compress {
 	job.setMapOutputValueClass(IntBytePair.class);
 
 	job.setOutputKeyClass(NullWritable.class);
-	//	job.setOutputValueClass(BytesWritable.class);
-	job.setOutputValueClass(IntBytePair.class);
+	//	job.setOutputValueClass(IntBytePair.class);
+	job.setOutputValueClass(BytesWritable.class);
 
 	
 	// Set number of reducers

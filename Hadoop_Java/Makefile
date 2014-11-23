@@ -15,6 +15,7 @@ clean:
 
 cleanhdfsT:
 	hdfs dfs -rm -r -f /user/tgelles1/output/
+	rm -rf *.jar *.class
 
-cleanhdfs:
+cleanhdfsP:
 	hdfs dfs -rm -r -f /user/pzhao1/compressoutput/
