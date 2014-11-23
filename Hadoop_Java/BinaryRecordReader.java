@@ -42,7 +42,8 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
 	throws IOException {
  
         // This InputSplit is a FileInputSplit
-        IndexedFileSplit split = (IndexedFileSplit) genericSplit;
+	IndexedFileSplit split = (IndexedFileSplit) genericSplit;
+	//FileSplit split = (FileSplit) genericSplit;
  
         // Retrieve configuration
         Configuration conf = context.getConfiguration();

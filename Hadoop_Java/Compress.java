@@ -63,7 +63,7 @@ public class Compress {
 
 
 	    for (IntBytePair value : values) {
-		System.out.println("Split ID: %d\n" + value.id.get());
+		System.out.println("Split ID: " + value.id.get() + "\n");
 		context.write(NullWritable.get(), value);
 	    }
 	}
@@ -85,7 +85,7 @@ public class Compress {
 	job.setMapOutputValueClass(IntBytePair.class);
 
 	job.setOutputKeyClass(NullWritable.class);
-	//job.setOutputValueClass(BytesWritable.class);
+	//	job.setOutputValueClass(BytesWritable.class);
 	job.setOutputValueClass(IntBytePair.class);
 
 	
