@@ -21,35 +21,55 @@ else
 fi
 
 function clean () {
+	echo
 	make clean
+	printf "\n\nhdfs dfs -rm -r -f %s\n\n" $HD_OUT_DIR
 	hdfs dfs -rm -r -f $HD_OUT_DIR
+	echo
 }
 
 function run () {
-	hadoop jar compress.jar Compress $HD_IN_DIR$1 $HD_OUT_DIR
+	if [ -z ${1+x} ]; then
+		printf "\nhadoop jar compress.jar Compress %s %s\n\n" $HD_IN_DIR $HD_OUT_DIR
+		hadoop jar compress.jar Compress $HD_IN_DIR $HD_OUT_DIR
+	else
+		printf "\nhadoop jar compress.jar Compress %s%s %s\n\n" $HD_IN_DIR $1 $HD_OUT_DIR
+		hadoop jar compress.jar Compress $HD_IN_DIR$1 $HD_OUT_DIR
+	fi
+	echo
 }
 
 function upload () {
 	if [ -z ${1+x} ]; then
 		printf "\nUsage: upload <file>\n\n"
 	else
-		hdfs dfs -copyFromLocal $1 $HD_IN_DIR"/."
+		printf "\nhdfs dfs -copyFromLocal %s %s.\n\n" $1 $HD_IN_DIR
+		hdfs dfs -copyFromLocal $1 $HD_IN_DIR"."
+		echo
 	fi
 }
 
 function download () {
 	if [ -z ${1+x} ]; then
+		printf "\nhdfs dfs -copyToLocal %s* .\n\n" $HD_OUT_DIR
 		hdfs dfs -copyToLocal $HD_OUT_DIR"*" .
+		echo
 	else
+		printf "\nhdfs dfs -copyToLocal %s%s .\n\n" $HD_OUT_DIR $1
 		hdfs dfs -copyToLocal $HD_OUT_DIR$1 .
+		echo
 	fi
 }
 
 function hls () {
 	if [ -z ${1+x} ]; then
+		printf "\nhdfs dfs -ls /user/%s\n\n" $HD_USER
 		hdfs dfs -ls "/user/"$HD_USER
+		echo
 	else
+		printf "\nhdfs dfs -ls /user/%s/%s\n\n" $HD_USER $1
 		hdfs dfs -ls "/user/"$HD_USER"/"$1
+		echo
 	fi	
 }
 
