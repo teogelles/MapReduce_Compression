@@ -1,6 +1,6 @@
 source /home/kwebb/public/setup-91.sh
 export PATH=$JAVA_HOME/bin:$PATH
-export HADOOP_CLASSPATH=$JAVA_HOME/lib/tools.jar:commons-compress-1.9/common-compress-1.9.jar
+export HADOOP_CLASSPATH=$JAVA_HOME/lib/tools.jar:External_Jars/*
 
 printf "\nHadoop initialized. \n"
 printf "  JAVA_HOME        = %s\n" $JAVA_HOME

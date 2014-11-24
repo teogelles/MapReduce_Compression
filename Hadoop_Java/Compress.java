@@ -18,16 +18,16 @@ import org.apache.log4j.BasicConfigurator;
 
 import org.apache.commons.collections.IteratorUtils;
 
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Iterator;
-
-import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 
 public class Compress {
 
@@ -54,11 +54,26 @@ public class Compress {
             */
 
             IntBytePair outputValue = new IntBytePair();
-            outputValue.id = key.id;
-            outputValue.content = value;
 
-            context.write(key.name, outputValue);
-        }
+            outputValue.id = key.id;
+          
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            BZip2CompressorOutputStream wrapper = new BZip2CompressorOutputStream(out, 1);
+            
+            try {
+                wrapper.write(value.getBytes(), 0, value.getLength());
+
+            } finally {  
+                wrapper.flush();
+                wrapper.close();
+
+                outputValue.content = new BytesWritable(out.toByteArray());
+            
+                System.out.println("Original: " + value);
+                System.out.println("Compressed: " + outputValue.content);
+                context.write(key.name, outputValue);  
+            }   
+        }    
     }
 
 
@@ -92,6 +107,33 @@ public class Compress {
             for (IntBytePair value : values) {
                 System.out.println("Split ID Initial: " + value.id.get());
                 System.out.println(value.toString());
+                
+                /*UNCOMMENT TO TEST COMPRESSION
+                 *
+                ByteArrayInputStream in = new ByteArrayInputStream(value.content.getBytes());
+                BZip2CompressorInputStream wrapper = new BZip2CompressorInputStream(in);
+                byte[] decompressedData = new byte[1];
+                
+                try {
+                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+                    int nRead;
+                    byte[] data = new byte[16384];
+
+                    while ((nRead = wrapper.read(data, 0, data.length)) != -1) {
+                        buffer.write(data, 0, nRead);
+                    }
+
+                    buffer.flush();
+                    decompressedData = buffer.toByteArray();
+                    System.out.println(new BytesWritable(decompressedData));
+                } finally {
+                    wrapper.close();
+                    sortedList.add(new IntBytePair(new IntWritable(value.id.get()),
+                            new BytesWritable(decompressedData)));
+
+                }*/
+
                 sortedList.add(new IntBytePair(new IntWritable(value.id.get()),
                             new BytesWritable(value.content.copyBytes())));
             }
