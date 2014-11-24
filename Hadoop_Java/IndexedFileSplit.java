@@ -25,23 +25,23 @@ public class IndexedFileSplit extends FileSplit {
      */
     public IndexedFileSplit() {
     }
-    
+
     public IndexedFileSplit(Path file, long start, long length, String[] hosts,
-			    int i) {
-		super(file, start, length, hosts);
-		this.index = i;
+            int i) {
+        super(file, start, length, hosts);
+        this.index = i;
     }
 
 
-	@Override
-	public void write(DataOutput out) throws IOException {
-		super.write(out);
-		out.writeInt(index);
-	}
+    @Override
+    public void write(DataOutput out) throws IOException {
+        super.write(out);
+        out.writeInt(index);
+    }
 
-	@Override
-	public void  readFields(DataInput in) throws IOException {
-		super.readFields(in);
-		index = in.readInt();
-	}
+    @Override
+    public void  readFields(DataInput in) throws IOException {
+        super.readFields(in);
+        index = in.readInt();
+    }
 }
