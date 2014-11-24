@@ -1,0 +1,12 @@
+Original file: cs35grading.tar ,  610519040 bytes
+
+One Computer:
+
+bzip2 time - 75s
+compressed size - 153978081 bytes
+
+
+Hadoop 8 mappers:
+
+bzip2 time - 27s
+compressed size - 161625557 bytes

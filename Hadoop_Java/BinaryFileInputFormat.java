@@ -34,6 +34,8 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
     private static final Log LOG = LogFactory.getLog(FileInputFormat.class);
     private static final double SPLIT_SLOP = 1.1;   // 10% slop
 
+    private final int NUM_SPLITS = 50;
+
     @Override
     public RecordReader<IntTextPair, BytesWritable>
     createRecordReader(InputSplit split, TaskAttemptContext context)
@@ -68,7 +70,7 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
                 //long splitSize = computeSplitSize(blockSize, minSize, maxSize);
 
                 //What we want for our blockSize and splitSize
-                long blockSize = length/10;
+                long blockSize = length/NUM_SPLITS;
                 long splitSize = blockSize;
 
                 long bytesRemaining = length;

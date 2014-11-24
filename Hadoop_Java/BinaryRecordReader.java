@@ -70,6 +70,9 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
         // In this simple RecordReader we only give 1 key-value pair, that is
         // (splitID, all bytes in the split). We may divide bytes into more
         // pairs later.
+        System.out.println("\nBinaryRecordReader::nextKeyValue(), index = " + this.key.id);
+        System.out.println("\nBinaryRecordReader::nextKeyValue(), length = " + (this.end - this.start));
+
         if (! this.fileRead) {
             byte[] buffer = new byte[ (int) (this.end - this.start)];
             this.fileIn.readFully(this.start, buffer, 0, buffer.length);
