@@ -28,13 +28,24 @@ function clean () {
 	echo
 }
 
-function run () {
+function compress () {
 	if [ -z ${1+x} ]; then
 		printf "\nhadoop jar compress.jar Compress %s %s\n\n" $HD_IN_DIR $HD_OUT_DIR
 		hadoop jar compress.jar Compress $HD_IN_DIR $HD_OUT_DIR
 	else
 		printf "\nhadoop jar compress.jar Compress %s%s %s\n\n" $HD_IN_DIR $1 $HD_OUT_DIR
 		hadoop jar compress.jar Compress $HD_IN_DIR$1 $HD_OUT_DIR
+	fi
+	echo
+}
+
+function decompress () {
+	if [ -z ${1+x} ]; then
+		printf "\nhadoop jar compress.jar Decompress %s %s\n\n" $HD_IN_DIR $HD_OUT_DIR
+		hadoop jar compress.jar Decompress $HD_IN_DIR $HD_OUT_DIR
+	else
+		printf "\nhadoop jar compress.jar Decompress %s%s %s\n\n" $HD_IN_DIR $1 $HD_OUT_DIR
+		hadoop jar compress.jar Decompress $HD_IN_DIR$1 $HD_OUT_DIR
 	fi
 	echo
 }
@@ -83,8 +94,10 @@ printf "  HD_OUT_DIR       = %s\n\n" $HD_OUT_DIR
 
 printf "\nUsage:\n"
 printf "  clean\n    Runs make clean and cleans hdfs.\n\n"
-printf "  run\n    Runs compress with %s* as input\n\n" $HD_IN_DIR
-printf "  run 30lines\n    Runs compress with %s30lines as input\n\n" $HD_IN_DIR
+printf "  compress\n    Runs compress with %s* as input\n\n" $HD_IN_DIR
+printf "  compress 30lines\n    Runs compress with %s30lines as input\n\n" $HD_IN_DIR
+printf "  decompress\n    Runs decompress with %s* as input\n\n" $HD_IN_DIR
+printf "  decompress 30lines\n    Runs decompress with %s30lines as input\n\n" $HD_IN_DIR
 printf "  upload 30lines\n    Copy local file 30lines to %s\n\n" $HD_IN_DIR
 printf "  download\n    Copy all files in %s to here\n\n" $HD_OUT_DIR
 printf "  download part-r-00000\n    Copy %spart-r-00000 to here\n\n" $HD_OUT_DIR
