@@ -40,17 +40,17 @@ public class Compress {
      * OutputValue - Same as InputValue.
      */
     public static class CompressMapper 
-            extends Mapper<IntTextPair, BytesWritable, IntTextPair, BytesWritable>{
+	extends Mapper<IntTextPair, BytesWritable, IntTextPair, BytesWritable>{
 
         public void map(IntTextPair key, BytesWritable value, Context context) 
             throws IOException, InterruptedException {
 
             /*
-            Configuration conf = context.getConfiguration();
-            TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
-            int taskNumber = taskID.getId();
+	      Configuration conf = context.getConfiguration();
+	      TaskID taskID = TaskID.forName(conf.get("mapreduce.task.id"));
+	      int taskNumber = taskID.getId();
 
-            context.write(new IntWritable(taskNumber), value);
+	      context.write(new IntWritable(taskNumber), value);
             */
           
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -81,48 +81,48 @@ public class Compress {
         extends Reducer<IntTextPair, BytesWritable, NullWritable, BytesWritable> {
 
         public void reduce(IntTextPair key, Iterable<BytesWritable> values,
-                Context context) 
+			   Context context) 
             throws IOException, InterruptedException {
 
             /*UNCOMMENT TO TEST COMPRESSION
              *
-            // Code to sort the input values.  This is best for testing.
-            // With the final program this may cause a performance hit we
-            // want to avoid
-            List<IntBytePair> sortedList = new ArrayList<IntBytePair>();
+	     // Code to sort the input values.  This is best for testing.
+	     // With the final program this may cause a performance hit we
+	     // want to avoid
+	     List<IntBytePair> sortedList = new ArrayList<IntBytePair>();
 
-            for (IntBytePair value : values) {
-                //System.out.println("Split ID Initial: " + value.id.get());
-                //System.out.println(value.toString());
+	     for (IntBytePair value : values) {
+	     //System.out.println("Split ID Initial: " + value.id.get());
+	     //System.out.println(value.toString());
                 
 
-                ByteArrayInputStream in = new ByteArrayInputStream(value.content.getBytes());
-                BZip2CompressorInputStream wrapper = new BZip2CompressorInputStream(in);
-                byte[] decompressedData = new byte[1];
+	     ByteArrayInputStream in = new ByteArrayInputStream(value.content.getBytes());
+	     BZip2CompressorInputStream wrapper = new BZip2CompressorInputStream(in);
+	     byte[] decompressedData = new byte[1];
                 
-                try {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	     try {
+	     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
-                    int nRead;
-                    byte[] data = new byte[16384];
+	     int nRead;
+	     byte[] data = new byte[16384];
 
-                    while ((nRead = wrapper.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
+	     while ((nRead = wrapper.read(data, 0, data.length)) != -1) {
+	     buffer.write(data, 0, nRead);
+	     }
 
-                    buffer.flush();
-                    decompressedData = buffer.toByteArray();
-                    System.out.println(new BytesWritable(decompressedData));
-                } finally {
-                    wrapper.close();
-                    sortedList.add(new IntBytePair(new IntWritable(value.id.get()),
-                            new BytesWritable(decompressedData)));
+	     buffer.flush();
+	     decompressedData = buffer.toByteArray();
+	     System.out.println(new BytesWritable(decompressedData));
+	     } finally {
+	     wrapper.close();
+	     sortedList.add(new IntBytePair(new IntWritable(value.id.get()),
+	     new BytesWritable(decompressedData)));
 
-                }
+	     }
 
-                sortedList.add(new IntBytePair(new IntWritable(value.id.get()),
-                            new BytesWritable(value.content.copyBytes())));
-            }
+	     sortedList.add(new IntBytePair(new IntWritable(value.id.get()),
+	     new BytesWritable(value.content.copyBytes())));
+	     }
             */
 
             //System.out.println("Initial sortedList:");
@@ -134,7 +134,10 @@ public class Compress {
             System.out.println("This is split " + key.id);
             for (BytesWritable value : values) {
                 //System.out.println("Split ID Sorted: " + value.id.get());
-                context.write(NullWritable.get(), value);
+		context.write(NullWritable.get(), value);
+		//		context.write(value.getLength(), value);
+		//context.write(new LongWritable(value.getLength()), value);
+		
             }
 
         }
@@ -151,7 +154,7 @@ public class Compress {
         // Set types
         job.setInputFormatClass(BinaryFileInputFormat.class);
 
-        job.setOutputFormatClass(BytesValueOutputFormat.class);
+	job.setOutputFormatClass(BytesValueOutputFormat.class);
 
         job.setJarByClass(Compress.class);
         job.setMapperClass(CompressMapper.class);
@@ -160,8 +163,10 @@ public class Compress {
         job.setMapOutputKeyClass(IntTextPair.class);
         job.setMapOutputValueClass(BytesWritable.class);
 
-        job.setOutputKeyClass(NullWritable.class);
+	//        job.setOutputKeyClass(NullWritable.class);
+	job.setOutputKeyClass(NullWritable.class);
         //	job.setOutputValueClass(IntBytePair.class);
+	//        job.setOutputValueClass(BytesWritable.class);
         job.setOutputValueClass(BytesWritable.class);
 
 
