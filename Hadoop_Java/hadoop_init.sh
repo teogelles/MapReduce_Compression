@@ -13,8 +13,8 @@ elif [ $(whoami) == "wliang1" ]; then
 	export HD_OUT_DIR="/user/wliang1/output/"
 elif [ $(whoami) == "tgelles1" ]; then
 	export HD_USER="tgelles1"
-	export HD_IN_DIR="/user/tgelles/input/"
-	export HD_OUT_DIR="/user/tgelles/output/"
+	export HD_IN_DIR="/user/tgelles1/input/"
+	export HD_OUT_DIR="/user/tgelles1/output/"
 else
 	printf "\nYou are not one of us!\n"
 	return

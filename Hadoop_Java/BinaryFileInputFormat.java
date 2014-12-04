@@ -41,7 +41,7 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
     createRecordReader(InputSplit split, TaskAttemptContext context)
     throws IOException, InterruptedException {
 
-    return new BinaryRecordReader();
+	return new BinaryRecordReader();
     }
 
 
@@ -54,7 +54,9 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
         int index = 0;
 
         long minSize = Math.max(getFormatMinSplitSize(), getMinSplitSize(job));
-        long maxSize = getMaxSplitSize(job);
+	//        long maxSize = getMaxSplitSize(job);
+	//Make maxSize 50MB
+	long maxSize = 50000000;
 
         // generate splits
         List<InputSplit> splits = new ArrayList<InputSplit>();
@@ -66,25 +68,28 @@ public class BinaryFileInputFormat extends FileInputFormat<IntTextPair, BytesWri
             if ((length != 0) && isSplitable(job, path)) {
 
                 //Original blockSize and splitSize
-                //long blockSize = file.getBlockSize();
-                //long splitSize = computeSplitSize(blockSize, minSize, maxSize);
+		//This now uses our 50MB maxSize
+                long blockSize = file.getBlockSize();
+                long splitSize = computeSplitSize(blockSize, minSize, maxSize);
 
                 //What we want for our blockSize and splitSize
-                long blockSize = length/NUM_SPLITS;
-                long splitSize = blockSize;
+		//We don't use this if we want a specific block size for every
+		//input file size
+                // long blockSize = length/NUM_SPLITS;
+                // long splitSize = blockSize;
 
                 long bytesRemaining = length;
                 while (((double) bytesRemaining)/splitSize > SPLIT_SLOP) {
                     int blkIndex = getBlockIndex(blkLocations, length-bytesRemaining);
                     splits.add(new IndexedFileSplit(path, length-bytesRemaining, splitSize, 
-                                blkLocations[blkIndex].getHosts(), index));
+						    blkLocations[blkIndex].getHosts(), index));
                     bytesRemaining -= splitSize;
                     index++;
                 }
 
                 if (bytesRemaining != 0) {
                     splits.add(new IndexedFileSplit(path, length-bytesRemaining, bytesRemaining, 
-                                blkLocations[blkLocations.length-1].getHosts(), index));
+						    blkLocations[blkLocations.length-1].getHosts(), index));
                 }
             }
 

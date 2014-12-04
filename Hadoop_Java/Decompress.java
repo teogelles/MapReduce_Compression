@@ -40,7 +40,7 @@ public class Decompress {
      * OutputValue - Same as InputValue.
      */
     public static class DecompressMapper 
-            extends Mapper<IntTextPair, BytesWritable, IntTextPair, BytesWritable>{
+	extends Mapper<IntTextPair, BytesWritable, IntTextPair, BytesWritable>{
 
         public void map(IntTextPair key, BytesWritable value, Context context) 
             throws IOException, InterruptedException {
@@ -72,7 +72,7 @@ public class Decompress {
         extends Reducer<IntTextPair, BytesWritable, NullWritable, BytesWritable> {
 
         public void reduce(IntTextPair key, Iterable<BytesWritable> values,
-                Context context) 
+			   Context context) 
             throws IOException, InterruptedException {
 
             System.out.println("This is split " + key.id);
