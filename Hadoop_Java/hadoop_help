@@ -1,7 +1,0 @@
-sesame:50070
-sesame:8088
-
-source /home/kwebb/public/setup-91.sh
-echo $HADOOP_HOME
-
-hdfs dfs -ls /

@@ -41,24 +41,24 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
     public void initialize(InputSplit genericSplit, TaskAttemptContext context)
     throws IOException {
 
-    // This InputSplit is a FileInputSplit
-    IndexedFileSplit split = (IndexedFileSplit) genericSplit;
+        // This InputSplit is a FileInputSplit
+        IndexedFileSplit split = (IndexedFileSplit) genericSplit;
 
-    // Retrieve configuration
-    Configuration conf = context.getConfiguration();
+        // Retrieve configuration
+        Configuration conf = context.getConfiguration();
 
-    // Set class variables
-    this.start = split.getStart();
-    this.end = start + split.getLength();
+        // Set class variables
+        this.start = split.getStart();
+        this.end = start + split.getLength();
 
-    this.fileRead = false;
+        this.fileRead = false;
 
-    // Load the input file
-    final Path path = split.getPath();
-    this.key.id.set(split.index);
-    this.key.name.set(path.getName());
-    FileSystem fs = path.getFileSystem(conf);
-    fileIn = fs.open(path);
+        // Load the input file
+        final Path path = split.getPath();
+        this.key.id.set(split.index);
+        this.key.name.set(path.getName());
+        FileSystem fs = path.getFileSystem(conf);
+        fileIn = fs.open(path);
     }
 
     /**
@@ -70,8 +70,8 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
         // In this simple RecordReader we only give 1 key-value pair, that is
         // (splitID, all bytes in the split). We may divide bytes into more
         // pairs later.
-        System.out.println("\nBinaryRecordReader::nextKeyValue(), index = " + this.key.id);
-        System.out.println("\nBinaryRecordReader::nextKeyValue(), length = " + (this.end - this.start));
+        //System.out.println("\nBinaryRecordReader::nextKeyValue(), index = " + this.key.id);
+        //System.out.println("\nBinaryRecordReader::nextKeyValue(), length = " + (this.end - this.start));
 
         if (! this.fileRead) {
             byte[] buffer = new byte[ (int) (this.end - this.start)];
