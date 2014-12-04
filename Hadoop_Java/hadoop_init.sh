@@ -22,7 +22,6 @@ fi
 
 function clean () {
 	echo
-	make clean
 	printf "\n\nhdfs dfs -rm -r -f %s\n\n" $HD_OUT_DIR
 	hdfs dfs -rm -r -f $HD_OUT_DIR
 	echo
