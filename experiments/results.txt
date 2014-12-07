@@ -1,0 +1,119 @@
+File: grading.tar
+Size: 1.6GB (1662914560 bytes)
+
+Compression:
+    Hadoop (50 MB chunks, 397 map tasks):
+        Time: 0m35.850s / 0m32.630s / 0m31.628s / 0m35.696s
+	Size: 418.8MB (439123795 bytes)
+    Hadoop (10MB chunks, 397 map tasks)
+        Time: 0m34.815s / 0m33.820s / 0m37.967s / 0m36.957s
+	Size: 418.8MB (439123795 bytes)
+    Hadoop (1MB chunks, 1663 map tasks)
+        Time: 0m49.451s / 0m47.991s / 0m47.033s / 0m49.864s
+	Size: 419.2MB (439542111 bytes)
+    bzip2 on ostrich:
+    	Time: 2m46.245s / 2m46.419s / 2m46.154s / 2m48.372s
+	Size: 391M (409521650 bytes)
+    bzip2 on sage:
+    	Time:
+	Size:
+    pbzip2 on ostrich:
+        Time: 1m33.071s / 0m59.029s / 0m58.919s / 0m58.470s
+	Size: 391MB (409956769 bytes)
+    pbzip2 on sage:
+        Time:
+	Size:
+	
+Decompression:
+    Hadoop (50MB chunks, 397 map tasks):
+        Time: 1m16.422s / 1m8.059s / 1m33.850s / 1m3.151s
+    Hadoop (10MB chunks, 397 map tasks): Is this useful?
+        Time: 1m7.594s / 1m7.205s / 1m3.316s / 1m8.097s
+    bzip2 on ostrich:
+        Time: 0m53.503s / 1m6.417s / 1m10.145s / 0m58.222s
+    bzip2 on sage:
+    	Time:
+    pbzip2 on ostrich:
+        Time: 0m42.176s / 0m46.167s / 0m44.873s / 0m38.734s
+    pbzip2 on sage:
+        Time:
+	
+----------------------------------------------
+
+File: ADNI_Images.tar
+Size: 15GB (15819407360 bytes)
+
+Compression:
+    Hadoop (50MB chunks, 3772 map tasks):
+        Time: 1m54.450s / 2m1.659s / 1m56.454s / 1m49.494s
+	Size: 1.3 GB (1395454769 bytes)
+    Hadoop (10MB chunks, 3772 map tasks)
+        Time: 1m36.336s / 1m53.613s / 1m46.679s / 1m41.911s
+	Size: 1.3GB (1395454769 bytes)
+    Hadoop (1MB chunks, 15820 map tasks)
+        Time: 4m7.808s / 4m9.707s / 4m6.316s / 4m14.185s
+	Size: 1.3GB (1398039578 bytes)
+    bzip2 on ostrich:
+        Time: 12m11.805s / 9m44.636s / 9m57.243s / 9m43.542s
+	Size: 1.3GB (1378603426 bytes)
+    bzip2 on sage:
+    	Time:
+	Size:
+    pbzip2 on ostrich:
+        Time: 4m56.427s / 2m14.760s / 3m56.140s / 4m5.881s
+	Size: 1.3GB (1385427160 bytes)
+    pbzip2 on sage:
+        Time:
+	Size:
+	
+Decompression:
+    Hadoop (50MB chunks, 3773 map tasks):
+        Time: 7m56.800s / 8m31.096s / 12m36.492s / 9m31.516s
+    bzip2 on ostrich:
+        Time: 4m29.631s / 4m12.628s / 4m28.420s / 3m50.860s
+    bzip2 on sage:
+    	Time:
+    pbzip2 on ostrich:
+        Time: 3m36.402 / 3m35.850s / 3m24.472s / 3m32.507s
+    pbzip2 on sage:
+        Time:
+	
+----------------------------------------------
+
+File: MacTeX.pkg
+Size: 2.4GB (2512999211 bytes)
+
+Compression:
+    Hadoop (50MB chunks, 600 map tasks):
+        Time: 1m33.633s / 1m43.265s / 1m32.300s / 1m29.084s
+	Size: 2.3GB (2467408782 bytes)
+    Hadoop (10MB chunks, )
+        Time: 1m49.221s / 1m56.793s / 1m50.268s / 1m29.361s
+	Size: 2.3GB (2467408782 bytes)
+    Hadoop (1MB chunks, )
+        Time: 1m55.674s / 2m20.805s / 1m50.096s / 1m47.228s
+	Size: 2.3GB (2467719810 bytes)
+    bzip2 on ostrich:
+        Time: 5m41.749s / 6m0.846s / 5m41.068s / 6m0.594s
+	Size: 2.3GB (2454570219 bytes)
+    bzip2 on sage:
+    	Time:
+	Size:
+    pbzip2 on ostrich:
+        Time: 2m8.018s / 2m4.307s / 2m3.350s / 2m4.207s
+	Size: 2.3GB (2454716221 bytes)
+    pbzip2 on sage:
+        Time:
+	Size:
+	
+Decompression:
+    Hadoop (50MB chunks, 600 map tasks):
+        Time: 1m32.127s / 2m0.227s / 2m0.631s / 1m44.183s
+    bzip2 on ostrich:
+        Time: 2m29.932s / 2m32.127s / 2m46.421s / 2m57.409s
+    bzip2 on sage:
+    	Time:
+    pbzip2 on ostrich:
+        Time: 1m23.797s / 1m0.969s / 1m8.281s / 1m2.545s
+    pbzip2 on sage:
+        Time:

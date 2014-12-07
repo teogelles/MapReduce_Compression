@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;

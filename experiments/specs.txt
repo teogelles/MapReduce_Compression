@@ -1,0 +1,9 @@
+ostrich:
+    4 cores
+    2.90 GHz processor
+    31GB memory
+
+sage:
+    16 cores
+    2.00 GHz processor
+    15GB memory

@@ -50,7 +50,7 @@ public class Decompress {
     }
 
 
-    public static class WriteFileReducer
+    public static class DecompressReducer
         extends Reducer<IntTextPair, BytesWritable, NullWritable, BytesWritable> {
 
         public void reduce(IntTextPair key, Iterable<BytesWritable> values,
@@ -72,7 +72,7 @@ public class Decompress {
 
         // Create Job and Configuration instances.
         Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, "Compress");
+        Job job = Job.getInstance(conf, "Decompress");
 
         // Set types
         job.setInputFormatClass(ChunkedFileInputFormat.class);
@@ -80,7 +80,7 @@ public class Decompress {
 
         job.setJarByClass(Decompress.class);
         job.setMapperClass(DecompressMapper.class);
-        job.setReducerClass(WriteFileReducer.class);
+        job.setReducerClass(DecompressReducer.class);
 
         job.setMapOutputKeyClass(IntTextPair.class);
         job.setMapOutputValueClass(BytesWritable.class);

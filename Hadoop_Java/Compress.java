@@ -79,7 +79,7 @@ public class Compress {
      * OutputKey   - Nothing
      * OutputValue - Same as InputValue.
      */
-    public static class WriteFileReducer
+    public static class CompressReducer
         extends Reducer<IntTextPair, BytesWritable, NullWritable, BytesWritable> {
 
         public void reduce(IntTextPair key, Iterable<BytesWritable> values,
@@ -152,7 +152,7 @@ public class Compress {
 
         job.setJarByClass(Compress.class);
         job.setMapperClass(CompressMapper.class);
-        job.setReducerClass(WriteFileReducer.class);
+        job.setReducerClass(CompressReducer.class);
 
         job.setMapOutputKeyClass(IntTextPair.class);
         job.setMapOutputValueClass(BytesWritable.class);
