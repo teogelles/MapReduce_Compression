@@ -14,9 +14,6 @@ Compression:
     bzip2 on ostrich:
     	Time: 2m46.245s / 2m46.419s / 2m46.154s / 2m48.372s
 	Size: 391M (409521650 bytes)
-    bzip2 on sage:
-    	Time:
-	Size:
     pbzip2 on ostrich:
         Time: 1m33.071s / 0m59.029s / 0m58.919s / 0m58.470s
 	Size: 391MB (409956769 bytes)
@@ -26,6 +23,9 @@ Compression:
     pbzip2 on pimento:
         Time: 0m50.195s / 0m54.100s / 0m50.218s / 0m53.012s
 	Size: 391MB (409956769 bytes)
+    gzip on ostrich:
+        Time: 0m59.594s / 0m59.597s / 0m59.596s / 1m4.647s
+	Size: 446MB (467021531 bytes)
 	
 Decompression:
     Hadoop (50MB chunks, 397 map tasks):
@@ -34,14 +34,14 @@ Decompression:
         Time: 1m7.594s / 1m7.205s / 1m3.316s / 1m8.097s
     bzip2 on ostrich:
         Time: 0m53.503s / 1m6.417s / 1m10.145s / 0m58.222s
-    bzip2 on sage:
-    	Time:
     pbzip2 on ostrich:
         Time: 0m42.176s / 0m46.167s / 0m44.873s / 0m38.734s
     pbzip2 on sage:
         Time: 0m26.489s / 0m31.217s / 0m32.126s / 0m32.867s
     pbzip2 on pimento:
     	Time: 0m38.872s / 0m37.695s / 0m43.121s / 0m40.102s
+    gzip on ostrich:
+    	Time: 0m39.399s / 0m38.384s / 0m40.407s / 0m39.392s
 	
 ----------------------------------------------
 
@@ -55,15 +55,12 @@ Compression:
     Hadoop (10MB chunks, 3772 map tasks)
         Time: 1m36.336s / 1m53.613s / 1m46.679s / 1m41.911s
 	Size: 1.3GB (1395454769 bytes)
-    Hadoop (1MB chunks, 15820 map tasks)
+    Hadoop (1MB chunks, 15820 map task)
         Time: 4m7.808s / 4m9.707s / 4m6.316s / 4m14.185s
 	Size: 1.3GB (1398039578 bytes)
     bzip2 on ostrich:
         Time: 12m11.805s / 9m44.636s / 9m57.243s / 9m43.542s
 	Size: 1.3GB (1378603426 bytes)
-    bzip2 on sage:
-    	Time:
-	Size:
     pbzip2 on ostrich:
         Time: 4m56.427s / 2m14.760s / 3m56.140s / 4m5.881s
 	Size: 1.3GB (1385427160 bytes)
@@ -73,20 +70,24 @@ Compression:
     pbzip2 on pimento:
         Time: 3m7.952s / 1m31.548s / 1m34.836s / 1m35.414s
 	Size: 1.3GB (1385427160 bytes)
+    gzip on ostrich:
+	Time: 3m26.207s / 3m3.184s / 3m4.185s / 3m3.184s
+	Size: 1.5GB (1575019702 bytes)
 	
 Decompression:
     Hadoop (50MB chunks, 3773 map tasks):
         Time: 7m56.800s / 8m31.096s / 12m36.492s / 9m31.516s
     bzip2 on ostrich:
         Time: 4m29.631s / 4m12.628s / 4m28.420s / 3m50.860s
-    bzip2 on sage:
-    	Time:
     pbzip2 on ostrich:
         Time: 3m36.402s / 3m35.850s / 3m24.472s / 3m32.507s
     pbzip2 on sage:
         Time: 3m51.235s / 3m52.184s / 4m0.264s / 4m7.616s
     pbzip2 on pimento:
     	Time: 2m57.659s / 3m35.910s / 3m38.868s / 3m25.196s
+    gzip on ostrich:
+        Time: 3m59.239s / 4m3.243s / 3m58.239s / 3m39.220s
+	
 ----------------------------------------------
 
 File: MacTeX.pkg
@@ -105,9 +106,6 @@ Compression:
     bzip2 on ostrich:
         Time: 5m41.749s / 6m0.846s / 5m41.068s / 6m0.594s
 	Size: 2.3GB (2454570219 bytes)
-    bzip2 on sage:
-    	Time:
-	Size:
     pbzip2 on ostrich:
         Time: 2m8.018s / 2m4.307s / 2m3.350s / 2m4.207s
 	Size: 2.3GB (2454716221 bytes)
@@ -117,17 +115,20 @@ Compression:
     pbzip2 on pimento:
         Time: 1m55.934s / 1m45.038s / 1m48.428s / 1m47.655s
 	Size: 2.3GB (2454716221 bytes)
+    gzip on ostrich:
+        Time: 1m38.982s / 1m15.753s / 1m22.824s / 1m19.795s
+	Size: 2.3 GB(2444004124 bytes)
 	
 Decompression:
     Hadoop (50MB chunks, 600 map tasks):
         Time: 1m32.127s / 2m0.227s / 2m0.631s / 1m44.183s
     bzip2 on ostrich:
         Time: 2m29.932s / 2m32.127s / 2m46.421s / 2m57.409s
-    bzip2 on sage:
-    	Time:
     pbzip2 on ostrich:
         Time: 1m23.797s / 1m0.969s / 1m8.281s / 1m2.545s
     pbzip2 on sage:
         Time: 0m59.104s / 0m55.005s / 0m53.138s / 0m53.995s
     pbzip2 on pimento:
     	Time: 1m12.646s / 1m10.190s / 1m8.923s / 1m8.551s
+    gzip on ostrich:
+        Time: 1m18.784s / 0m53.531s / 0m52.522s / 0m51.518s

@@ -1,3 +1,7 @@
+/*
+ * The credit for this file goes to Witty Keegan
+ * http://wittykeegan.blogspot.com/2013/04/hadoop-writing-bytes.html
+ */
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
