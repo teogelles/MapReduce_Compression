@@ -72,7 +72,7 @@ public class BinaryRecordReader extends RecordReader<IntTextPair, BytesWritable>
         // pairs later.
         //System.out.println("\nBinaryRecordReader::nextKeyValue(), index = " + this.key.id);
         //System.out.println("\nBinaryRecordReader::nextKeyValue(), length = " + (this.end - this.start));
-
+        
         if (! this.fileRead) {
             byte[] buffer = new byte[ (int) (this.end - this.start)];
             this.fileIn.readFully(this.start, buffer, 0, buffer.length);

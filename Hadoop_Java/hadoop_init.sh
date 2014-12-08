@@ -38,6 +38,17 @@ function compress () {
 	echo
 }
 
+function  compcompress() {
+	if [ -z ${1+x} ]; then
+		printf "\nhadoop jar compress.jar CompatibleCompress %s %s\n\n" $HD_IN_DIR $HD_OUT_DIR
+		hadoop jar compress.jar CompatibleCompress $HD_IN_DIR $HD_OUT_DIR
+	else
+		printf "\nhadoop jar compress.jar CompatibleCompress %s%s %s\n\n" $HD_IN_DIR $1 $HD_OUT_DIR
+		hadoop jar compress.jar CompatibleCompress $HD_IN_DIR$1 $HD_OUT_DIR
+	fi
+	echo
+}
+
 function decompress () {
 	if [ -z ${1+x} ]; then
 		printf "\nhadoop jar compress.jar Decompress %s %s\n\n" $HD_IN_DIR $HD_OUT_DIR
