@@ -21,8 +21,11 @@ Compression:
         Time: 1m33.071s / 0m59.029s / 0m58.919s / 0m58.470s
 	Size: 391MB (409956769 bytes)
     pbzip2 on sage:
-        Time:
-	Size:
+        Time: 0m42.297s / 0m39.580s / 0m38.161s / 0m36.254s
+	Size: 391MB (409956769 bytes)
+    pbzip2 on pimento:
+        Time: 0m50.195s / 0m54.100s / 0m50.218s / 0m53.012s
+	Size: 391MB (409956769 bytes)
 	
 Decompression:
     Hadoop (50MB chunks, 397 map tasks):
@@ -36,7 +39,9 @@ Decompression:
     pbzip2 on ostrich:
         Time: 0m42.176s / 0m46.167s / 0m44.873s / 0m38.734s
     pbzip2 on sage:
-        Time:
+        Time: 0m26.489s / 0m31.217s / 0m32.126s / 0m32.867s
+    pbzip2 on pimento:
+    	Time: 0m38.872s / 0m37.695s / 0m43.121s / 0m40.102s
 	
 ----------------------------------------------
 
@@ -63,8 +68,11 @@ Compression:
         Time: 4m56.427s / 2m14.760s / 3m56.140s / 4m5.881s
 	Size: 1.3GB (1385427160 bytes)
     pbzip2 on sage:
-        Time:
-	Size:
+        Time: 3m4.829s / 3m7.265s / 3m14.438s / 3m17.804s
+	Size: 1.3GB (1385427160 bytes)
+    pbzip2 on pimento:
+        Time: 3m7.952s / 1m31.548s / 1m34.836s / 1m35.414s
+	Size: 1.3GB (1385427160 bytes)
 	
 Decompression:
     Hadoop (50MB chunks, 3773 map tasks):
@@ -74,10 +82,11 @@ Decompression:
     bzip2 on sage:
     	Time:
     pbzip2 on ostrich:
-        Time: 3m36.402 / 3m35.850s / 3m24.472s / 3m32.507s
+        Time: 3m36.402s / 3m35.850s / 3m24.472s / 3m32.507s
     pbzip2 on sage:
-        Time:
-	
+        Time: 3m51.235s / 3m52.184s / 4m0.264s / 4m7.616s
+    pbzip2 on pimento:
+    	Time: 2m57.659s / 3m35.910s / 3m38.868s / 3m25.196s
 ----------------------------------------------
 
 File: MacTeX.pkg
@@ -103,8 +112,11 @@ Compression:
         Time: 2m8.018s / 2m4.307s / 2m3.350s / 2m4.207s
 	Size: 2.3GB (2454716221 bytes)
     pbzip2 on sage:
-        Time:
-	Size:
+        Time: 1m35.932s / 1m35.739s / 1m22.610s / 1m28.242
+	Size: 2.3GB (2454716221 bytes)
+    pbzip2 on pimento:
+        Time: 1m55.934s / 1m45.038s / 1m48.428s / 1m47.655s
+	Size: 2.3GB (2454716221 bytes)
 	
 Decompression:
     Hadoop (50MB chunks, 600 map tasks):
@@ -116,4 +128,6 @@ Decompression:
     pbzip2 on ostrich:
         Time: 1m23.797s / 1m0.969s / 1m8.281s / 1m2.545s
     pbzip2 on sage:
-        Time:
+        Time: 0m59.104s / 0m55.005s / 0m53.138s / 0m53.995s
+    pbzip2 on pimento:
+    	Time: 1m12.646s / 1m10.190s / 1m8.923s / 1m8.551s

@@ -7,3 +7,8 @@ sage:
     16 cores
     2.00 GHz processor
     15GB memory
+
+pimento:
+    8 cores
+    3.70 GHz processor
+    62 GB memory
