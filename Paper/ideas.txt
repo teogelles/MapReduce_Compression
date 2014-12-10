@@ -1,0 +1,4 @@
+Future Work:
+    Test on EVEN BIGGER files
+    Adjust exact number of mappers
+    
