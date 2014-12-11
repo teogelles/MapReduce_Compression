@@ -136,6 +136,7 @@ Decompression:
     pbzip2 with our compression on sage:
         Time: 4m0.240s / 4m11.252s / 4m10.250s / 4m14.255s
 	Avg:  4m8.999s (248.999s)
+	
 ----------------------------------------------
 
 
@@ -147,11 +148,11 @@ Compression:
         Time: 1m33.633s / 1m43.265s / 1m32.300s / 1m29.084s
 	Avg:  1m34.571s (94.571s)
 	Size: 2.3GB (2467408782 bytes)
-    Hadoop (10MB chunks, )
+    Hadoop (10MB chunks, 600 map tasks)
         Time: 1m49.221s / 1m56.793s / 1m50.268s / 1m29.361s
 	Avg:  1m46.411s (106.411s)
 	Size: 2.3GB (2467408782 bytes)
-    Hadoop (1MB chunks, )
+    Hadoop (1MB chunks, 2513 map tasks)
         Time: 1m55.674s / 2m20.805s / 1m50.096s / 1m47.228s
 	Avg:  1m58.451s (118.451s)
 	Size: 2.3GB (2467719810 bytes)
@@ -206,3 +207,23 @@ Decompression:
     pbzip2 with our compression on sage:
         Time: 0m55.556s / 0m50.509s / 0m50.502s / 0m49.499s
 	Avg:  0m51.517s
+
+----------------------------------------------
+
+File: BIGADNI.tar
+Size: 59GB (63277639680 bytes)
+
+Compression:
+
+    Hadoop (50MB chunks):
+        Time: 9m8.803s / 9m4.809s / 9m19.534s / 9m32.824s
+	Avg:  9m16.492s (556.492s)
+	Size: 5581870044 bytes
+    pbzip2 on sage:
+        Time: 18m54.113s / 18m16.110s / 18m17.110s / 18m22.110s
+	Avg:  18m27.361s (1107.361s)
+	Size: 5.2GB (5541666828 bytes)
+    pbzip2 on pimento:
+        Time: 13m56.836s / 13m9.790s / 13m3.783s / 13m16.796s
+	Avg:  13m21.801s (801.801s)
+	Size: 5.2GB (5541666828 bytes)

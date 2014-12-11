@@ -115,3 +115,95 @@ pyplot.xlim(0, max(left)+width+10)
 pyplot.show()
 
 
+
+"""
+grading.tar Compression Size
+"""
+
+width = 50
+left = [x*(width+10)+10 for x in range(6)]
+height = [439123795, 439542111, 409521650, 409956769, 467021531, 1662914560]
+height.sort()
+
+
+pyplot.bar(left, height, width)
+pyplot.xlabel("Compression Algorithm Used", fontsize=25)
+pyplot.ylabel("Size (bytes)", fontsize=25)
+ind = np.arange(6)
+pyplot.xticks(ind*(width+10)+width/2.+10, ('bzip2', 'pbzip2', 'Hadoop 50MB / 10MB', 'Hadoop 1MB', 'gzip', 'Original'))
+pyplot.xlim(0, max(left)+width+10)
+pyplot.show()
+
+"""
+ADNI-Images.tar Compression Size
+"""
+
+width = 50
+left = [x*(width+10)+10 for x in range(6)]
+height = [1395454769, 1398039578, 1378603426, 1385427160, 1575019702, 15819407360]
+height.sort()
+
+
+pyplot.bar(left, height, width)
+pyplot.xlabel("Compression Algorithm Used", fontsize=25)
+pyplot.ylabel("Size (bytes)", fontsize=25)
+ind = np.arange(6)
+pyplot.xticks(ind*(width+10)+width/2.+10, ('bzip2', 'pbzip2', 'Hadoop 50MB / 10MB', 'Hadoop 1MB', 'gzip', 'Original'))
+pyplot.xlim(0, max(left)+width+10)
+pyplot.show()
+
+
+"""
+MacTeX.pkg Compression Size
+"""
+
+width = 50
+left = [x*(width+10)+10 for x in range(6)]
+height = [2512999211, 2467408782, 2467719810, 2454570219, 2454716221, 2444004124]
+height.sort()
+
+
+pyplot.bar(left, height, width)
+pyplot.xlabel("Compression Algorithm Used", fontsize=25)
+pyplot.ylabel("Size (bytes)", fontsize=25)
+ind = np.arange(6)
+pyplot.xticks(ind*(width+10)+width/2.+10, ('bzip2', 'pbzip2', 'gzip', 'Hadoop 50MB / 10MB', 'Hadoop 1MB', 'Original'))
+pyplot.xlim(0, max(left)+width+10)
+pyplot.show()
+
+
+"""
+BIGADNI.tar Compression
+"""
+
+width = 50
+left = [x*(width+10)+10 for x in range(3)]
+height = [556.492, 801.801, 1107.361]
+height.sort()
+
+
+pyplot.bar(left, height, width)
+pyplot.xlabel("Compression Algorithm Used", fontsize=25)
+pyplot.ylabel("Time (s)", fontsize=25)
+ind = np.arange(3)
+pyplot.xticks(ind*(width+10)+width/2.+10, ('Hadoop 50MB', 'pbzip2 on pimento', 'pbzip2 on sage'))
+pyplot.xlim(0, max(left)+width+10)
+pyplot.show()
+
+"""
+BIGADNI.tar Compression Size
+"""
+
+width = 50
+left = [x*(width+10)+10 for x in range(3)]
+height = [5581870044, 5541666828, 63277639680]
+height.sort()
+
+
+pyplot.bar(left, height, width)
+pyplot.xlabel("Compression Algorithm Used", fontsize=25)
+pyplot.ylabel("Size (bytes)", fontsize=25)
+ind = np.arange(3)
+pyplot.xticks(ind*(width+10)+width/2.+10, ('pbzip2', 'Hadoop 50MB', 'Original'))
+pyplot.xlim(0, max(left)+width+10)
+pyplot.show()
