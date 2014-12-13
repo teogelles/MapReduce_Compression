@@ -38,7 +38,13 @@ Compression:
         Time: 0m59.594s / 0m59.597s / 0m59.596s / 1m4.647s
 	Avg:  1m0.859s (60.859s)
 	Size: 446MB (467021531 bytes)
-	
+
+    *50MB chunks is the best for hadoop
+    *1 chunk is really bad (obv)
+    *Worse compression size, but beats bzip2 on all lab machines. (Hadoop)
+    *pbzip2 on sage works best.
+    *gzip is not good, terrible time and size
+
 Decompression:
     Hadoop (50MB chunks, 397 map tasks):
         Time: 1m16.422s / 1m8.059s / 1m33.850s / 1m3.151s
@@ -67,7 +73,15 @@ Decompression:
     pbzip2 with our compression on sage:
         Time: 0m35.355s / 0m34.348s / 0m34.349s / 0m34.345s
 	Avg:  0m34.599s
-	
+
+    *Hadoop is not good
+    *bzip2 runs best on ostrich
+    *pbzip2 runs best on sage
+    *gzip is actually decent
+    *pbzip2 with our compression is worse than
+    with vanilla bzip2
+
+
 ----------------------------------------------
 
 File: ADNI_Images.tar
@@ -110,6 +124,13 @@ Compression:
 	Time: 3m26.207s / 3m3.184s / 3m4.185s / 3m3.184s
 	Avg:  3m9.190s (189.190s)
 	Size: 1.5GB (1575019702 bytes)
+
+    *1MB chunks do a lot worse
+    *10MB chunks still the best
+    *bzip2 is not good
+    *Hadoop starts to do a lot better than pbzip2 (obv)
+    *pimento surpasses sage.
+    *gzip is getting closer, but worse compression size.
 	
 Decompression:
     Hadoop (50MB chunks, 3773 map tasks):
@@ -137,6 +158,10 @@ Decompression:
         Time: 4m0.240s / 4m11.252s / 4m10.250s / 4m14.255s
 	Avg:  4m8.999s (248.999s)
 	
+    *Hadoop sucks (as expected) although it is catching up to local methods
+    *bzip2 is better on ostritch
+    *pbzip2 is better on pimento than on sage!
+    *gzip is really good for being non-parallel.
 ----------------------------------------------
 
 
@@ -181,6 +206,10 @@ Compression:
 	Avg:  1m24.339s (84.339s)
 	Size: 2.3 GB(2444004124 bytes)
 	
+    *Bad decompression size all around
+    *pbzip2 and gzip surpass hadoop
+    *gzip is best
+
 Decompression:
 
     Hadoop (50MB chunks, 600 map tasks):
@@ -208,6 +237,7 @@ Decompression:
         Time: 0m55.556s / 0m50.509s / 0m50.502s / 0m49.499s
 	Avg:  0m51.517s
 
+    *same as above
 ----------------------------------------------
 
 File: BIGADNI.tar
@@ -227,3 +257,5 @@ Compression:
         Time: 13m56.836s / 13m9.790s / 13m3.783s / 13m16.796s
 	Avg:  13m21.801s (801.801s)
 	Size: 5.2GB (5541666828 bytes)
+
+    *hadoop rules
